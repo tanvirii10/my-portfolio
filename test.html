@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Website Unit Tests</title>
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.20.0.css">
+</head>
+<body>
+
+  <div id="qunit"></div>
+  <div id="qunit-fixture">
+   
+    <form id="contactForm">
+      <input type="text" id="name" value="Tanvir" />
+      <button type="submit" id="submitBtn">Submit</button>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/qunit/qunit-2.20.0.js"></script>
+
+  <script src="script.js"></script>
+
+  <script>
+    QUnit.module('Website Unit Tests', function() {
+
+      QUnit.test('Contact form submit triggers alert and resets input fields', function(assert) {
+        
+
+        let alertCalled = false;
+        let alertMessage = "";
+        window.alert = function(msg) {
+          alertCalled = true;
+          alertMessage = msg;
+        };
+
+        const form = document.getElementById('contactForm');
+        const input = document.getElementById('name');
+
+        const event = new Event('submit', { cancelable: true });
+        form.dispatchEvent(event);
+
+
+        assert.ok(alertCalled, 'Alert dialog was successfully triggered');
+        
+        assert.equal(
+          alertMessage, 
+          'Thank you for your message! Your message has been submitted successfully.', 
+          'Alert message matches expected output'
+        );
+
+        assert.equal(input.value, '', 'Form input field was reset properly');
+      });
+
+    });
+  </script>
+</body>
+</html>
